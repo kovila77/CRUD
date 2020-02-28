@@ -86,19 +86,19 @@ namespace CRUD
             foreach (ListViewItem selectedItem in lvUsers.SelectedItems)
             {
                 var selectedItemTagAsTuple = (Tuple<int, DateTime>)selectedItem.Tag;
-                var formRegistration = new fReg(fReg.FormType.Update)
+                var formUpdating = new fReg(fReg.FormType.Update)
                 {
                     UserId = selectedItemTagAsTuple.Item1,
                     DateReg = selectedItemTagAsTuple.Item2,
                     UserLogin = selectedItem.SubItems[0].Text,
                 };
-                if (formRegistration.ShowDialog() == DialogResult.OK)
+                if (formUpdating.ShowDialog() == DialogResult.OK)
                 {
-                    selectedItem.SubItems[0].Text = formMuUpdate.MuName;
-                    selectedItem.SubItems[1].Text = formMuUpdate.MuHead;
-                    selectedItem.SubItems[2].Text = formMuUpdate.MuAddress;
-                    selectedItem.SubItems[3].Text = formMuUpdate.MuModifiedDate.ToLongDateString();
-                    selectedItem.Tag = Tuple.Create(muId, formMuUpdate.MuModifiedDate);
+                    selectedItem.SubItems[0].Text = formUpdating.UserLogin;
+                    if (formUpdating.UserSalt != null) selectedItem.SubItems[1].Text = Encoding.Default.GetString(formUpdating.UserSalt);
+                    if (formUpdating.UserPassword != null) selectedItem.SubItems[2].Text = Encoding.Default.GetString(formUpdating.UserPassword);
+                    selectedItem.SubItems[3].Text = formUpdating.DateReg.ToLongDateString();
+                    selectedItem.Tag = Tuple.Create(formUpdating.UserId, formUpdating.DateReg);
                 }
             }
         }

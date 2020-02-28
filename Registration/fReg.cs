@@ -169,13 +169,23 @@ namespace Registration
                     this.DialogResult = DialogResult.OK;
                     break;
                 case FormType.Update:
-                    _dbConrol.SetNewData(userId, tbLogin.Text, tbPassword.Text, dtpDate.Value
-                        , tbPassword.Text.Trim() == ""
-                        , userLogin == _dbConrol.RemoveExtraSpaces(tbLogin.Text)
-                        , dateReg == dtpDate.Value
-                        , ref userSalt
-                        , ref userPassword
-                        );
+                    string newPaswr = _dbConrol.RemoveExtraSpaces(tbPassword.Text);
+                    string newLogin = _dbConrol.RemoveExtraSpaces(tbLogin.Text);
+                    DateTime newDate = dtpDate.Value;
+                    if (newPaswr != "")
+                    {
+                        userSalt = PasswordHandler.PasswordHandler.CreateSalt();
+                        userPassword = PasswordHandler.PasswordHandler.HashPassword(newPaswr, userSalt);
+                    }
+                    if (userLogin != newLogin)
+                    {
+                        userLogin = newLogin;
+                    }
+                    if (dateReg != newDate)
+                    {
+                        dateReg = newDate;
+                    }
+                    _dbConrol.SetNewData(userId, newLogin, userSalt, userPassword, newDate);
                     this.DialogResult = DialogResult.OK;
                     break;
                 default:
@@ -186,7 +196,7 @@ namespace Registration
         private void tbPassword_TextChanged(object sender, EventArgs e)
         {
             if (frmType == FormType.Update && _dbConrol.RemoveExtraSpaces(tbPassword.Text) == "") { epMain.SetError(tbPassword, ""); return; }
-            
+
             if (!PasswordHandler.PasswordHandler.IsStrongPassword(tbPassword.Text, new List<string> { tbLogin.Text }))
             {
                 epMain.SetError(tbPassword, "Слабый пороль");
