@@ -201,11 +201,11 @@ namespace DBUsersHandler
             }
         }
 
-        public void AddNewUser(string newLogin, string newPassword, out int id, out string loginCorrected, out byte[] salt, out byte[] hash, out DateTime dateReg)
+        public void AddNewUser(string newLogin, string newPassword, out int id, out byte[] salt, out byte[] hash, out DateTime dateReg)
         {
             string passwordCorrected = newPassword.Trim();
 
-            loginCorrected = RemoveExtraSpaces(newLogin);
+            string loginCorrected = RemoveExtraSpaces(newLogin);
 
             if (!_loginRegex.IsMatch(RemoveExtraSpaces(loginCorrected)))
             {
@@ -250,7 +250,6 @@ namespace DBUsersHandler
                 var sCommand = new NpgsqlCommand
                 {
                     Connection = sConn,
-
                 };
 
                 if (hash != null && salt != null)

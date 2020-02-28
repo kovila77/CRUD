@@ -87,6 +87,8 @@ namespace Registration
             {
                 tbLogin.Text = userLogin;
                 dtpDate.Value = dateReg;
+                tbLogin.Tag = true;
+                tbPassword.Tag = true;
             }
         }
 
@@ -95,27 +97,25 @@ namespace Registration
             InitializeComponent();
             InitializeDBUserClass();
             this.frmType = frmType;
+            tbLogin.Tag = false;
+            tbPassword.Tag = false;
+
             switch (frmType)
             {
                 case FormType.SelfMade:
-                    tbLogin.Tag = false;
-                    tbPassword.Tag = false;
                     btRegister.Text = "Зарегистрировать";
                     this.Text = "Регистрация";
                     dtpDate.Value = DateTime.Today;
                     dtpDate.Enabled = false;
                     break;
                 case FormType.Insert:
-                    tbLogin.Tag = false;
-                    tbPassword.Tag = false;
+                    
                     btRegister.Text = "Добавить";
                     this.Text = "Добавление нового пользователя";
                     dtpDate.Value = DateTime.Today;
                     dtpDate.Enabled = false;
                     break;
-                case FormType.Update:
-                    tbLogin.Tag = true;
-                    tbPassword.Tag = true;
+                case FormType.Update:                    
                     btRegister.Text = "Изменить";
                     this.Text = "Изменение пользователя";
                     break;
@@ -189,7 +189,8 @@ namespace Registration
                     break;
 
                 case FormType.Insert:
-                    _dbConrol.AddNewUser(tbLogin.Text, tbPassword.Text, out userId, out userLogin, out userSalt, out userPassword, out dateReg);
+                    userLogin = _dbConrol.RemoveExtraSpaces(tbLogin.Text);
+                    _dbConrol.AddNewUser(tbLogin.Text, tbPassword.Text, out userId, out userSalt, out userPassword, out dateReg);
                     this.DialogResult = DialogResult.OK;
                     break;
                 case FormType.Update:

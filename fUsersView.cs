@@ -120,5 +120,27 @@ namespace CRUD
             lvUsers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
             lvUsers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
+
+        private void загрузитьДанныеЗановоToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InitializeLVUsers();
+        }
+
+        private void lvUsers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+            изменитьToolStripMenuItem1.Enabled =
+                     удалитьToolStripMenuItem1.Enabled = lvUsers.SelectedItems.Count > 0;
+        }
+
+        private void правкаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            изменитьToolStripMenuItem.Enabled =
+                                удалитьToolStripMenuItem.Enabled = lvUsers.SelectedItems.Count > 0;
+        }
     }
 }
