@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Authentication;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Registration
+namespace Authentication
 {
-    static class Registration
+    static class Program
     {
         /// <summary>
         /// Главная точка входа для приложения.
@@ -16,7 +17,7 @@ namespace Registration
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new fReg(fReg.FormType.SelfMade));
+            Application.Run(new fAuth());
         }
     }
 }

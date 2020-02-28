@@ -59,20 +59,20 @@ namespace CRUD
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var formRegistration = new fReg();
+            var formRegistration = new fReg(fReg.FormType.Insert);
             if (formRegistration.ShowDialog() == DialogResult.OK)
             {
-                    var lvi = new ListViewItem(new[]
-                    {
-                        formRegistration.userLogin,
-                        Encoding.Default.GetString(formRegistration.userSalt),
-                        Encoding.Default.GetString(formRegistration.userPassword),
-                        formRegistration.dateReg.ToLongDateString()
+                var lvi = new ListViewItem(new[]
+                {
+                        formRegistration.UserLogin,
+                        Encoding.Default.GetString(formRegistration.UserSalt),
+                        Encoding.Default.GetString(formRegistration.UserPassword),
+                        formRegistration.DateReg.ToLongDateString()
                     })
-                    {
-                        Tag = Tuple.Create(formRegistration.userId, formRegistration.dateReg)
-                    };
-                    lvUsers.Items.Add(lvi);                
+                {
+                    Tag = Tuple.Create(formRegistration.UserId, formRegistration.DateReg)
+                };
+                lvUsers.Items.Add(lvi);
             }
         }
 
@@ -83,7 +83,24 @@ namespace CRUD
 
         private void изменитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            foreach (ListViewItem selectedItem in lvUsers.SelectedItems)
+            {
+                var selectedItemTagAsTuple = (Tuple<int, DateTime>)selectedItem.Tag;
+                var formRegistration = new fReg(fReg.FormType.Update)
+                {
+                    UserId = selectedItemTagAsTuple.Item1,
+                    DateReg = selectedItemTagAsTuple.Item2,
+                    UserLogin = selectedItem.SubItems[0].Text,
+                };
+                if (formRegistration.ShowDialog() == DialogResult.OK)
+                {
+                    selectedItem.SubItems[0].Text = formMuUpdate.MuName;
+                    selectedItem.SubItems[1].Text = formMuUpdate.MuHead;
+                    selectedItem.SubItems[2].Text = formMuUpdate.MuAddress;
+                    selectedItem.SubItems[3].Text = formMuUpdate.MuModifiedDate.ToLongDateString();
+                    selectedItem.Tag = Tuple.Create(muId, formMuUpdate.MuModifiedDate);
+                }
+            }
         }
     }
 }

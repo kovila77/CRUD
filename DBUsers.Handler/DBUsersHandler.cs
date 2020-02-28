@@ -237,16 +237,60 @@ namespace DBUsersHandler
             }
         }
 
-        public void SetNewData(int id, string newLogin, string newPassword)
+        public void SetNewData(int id, string login, string newPassword, DateTime date, bool passwordChanged, bool loginChanged, bool dateChanged, ref string oldLogin, ref byte[] oldSalt, ref byte[] oldHash, ref DateTime oldDate)
         {
-            newPassword = newPassword.Trim();
-            newLogin = RemoveExtraSpaces(newLogin);
-            if (!_loginRegex.IsMatch(RemoveExtraSpaces(newLogin)))
+            if (!loginChanged && !passwordChanged && !dateChanged) return;
+            string passwordCorrected = null;
+            if (passwordChanged)
             {
-                throw new ArgumentException("Bad login");
+                passwordCorrected = newPassword.Trim();
+                salt = null; hash = null;
             }
+            if (loginChanged)
+            {
+                login = RemoveExtraSpaces(login);
+                if (!_loginRegex.IsMatch(RemoveExtraSpaces(login)))
+                {
+                    throw new ArgumentException("Bad login");
+                }
+            }
+            using (var sConn = new NpgsqlConnection(_sConnStr))
+            {
+                sConn.Open();
+                var sCommand = new NpgsqlCommand
+                {
+                    Connection = sConn
+                };
+                sCommand.Parameters.AddWithValue("@id", id);
 
-
+                if (loginChanged)
+                {
+                    sCommand.CommandText = @"UPDATE users
+                                            SET ulogin = @login
+                                            WHERE uid IN (SELECT uid FROM users WHERE uid = @id);";
+                    sCommand.Parameters.AddWithValue("@login", login);
+                    sCommand.ExecuteNonQuery();
+                }
+                if (passwordChanged)
+                {
+                    salt = PasswordHandler.PasswordHandler.CreateSalt();
+                    hash = PasswordHandler.PasswordHandler.HashPassword(passwordCorrected, salt);
+                    sCommand.CommandText = @"UPDATE users
+                                            SET  usalt = @salt, upassword = @passwordHash
+                                            WHERE uid IN (SELECT uid FROM users WHERE uid = @id;";
+                    sCommand.Parameters.AddWithValue("@salt", salt);
+                    sCommand.Parameters.AddWithValue("@passwordHash", hash);
+                    sCommand.ExecuteNonQuery();
+                }
+                if (dateChanged)
+                {
+                    sCommand.CommandText = @"UPDATE users
+                                            SET  udateregistration = @date
+                                            WHERE uid IN (SELECT uid FROM users WHERE uid = @id;";
+                    sCommand.Parameters.AddWithValue("@date", date);
+                    sCommand.ExecuteNonQuery();
+                }
+            }
         }
 
         public DBUsersDataExtracror CreateDataExtractor()
