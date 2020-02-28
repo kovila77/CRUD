@@ -114,5 +114,11 @@ namespace CRUD
                 lvUsers.Items.Remove(selectedItem);
             }
         }
+
+        private void выровнятьСтолбцыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            lvUsers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            lvUsers.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+        }
     }
 }

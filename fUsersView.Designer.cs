@@ -35,13 +35,15 @@
             this.удалитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lvUsers = new System.Windows.Forms.ListView();
+            this.выровнятьСтолбцыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.правкаToolStripMenuItem});
+            this.правкаToolStripMenuItem,
+            this.выровнятьСтолбцыToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -99,6 +101,13 @@
             this.lvUsers.UseCompatibleStateImageBehavior = false;
             this.lvUsers.View = System.Windows.Forms.View.Details;
             // 
+            // выровнятьСтолбцыToolStripMenuItem
+            // 
+            this.выровнятьСтолбцыToolStripMenuItem.Name = "выровнятьСтолбцыToolStripMenuItem";
+            this.выровнятьСтолбцыToolStripMenuItem.Size = new System.Drawing.Size(130, 20);
+            this.выровнятьСтолбцыToolStripMenuItem.Text = "Выровнять столбцы";
+            this.выровнятьСтолбцыToolStripMenuItem.Click += new System.EventHandler(this.выровнятьСтолбцыToolStripMenuItem_Click);
+            // 
             // fUsersView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -125,6 +134,7 @@
         private System.Windows.Forms.ToolStripMenuItem удалитьToolStripMenuItem;
         private System.Windows.Forms.ListView lvUsers;
         private System.Windows.Forms.ToolStripMenuItem выходToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem выровнятьСтолбцыToolStripMenuItem;
     }
 }
 

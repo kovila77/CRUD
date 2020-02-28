@@ -264,7 +264,7 @@ namespace Registration
             if (frmType != FormType.Update) return;
             if (dtpDate.Value == dateReg)
             {
-                epMain.SetError(tbPassword, "");
+                epMain.SetError(dtpDate, "");
             }
             else
             {
