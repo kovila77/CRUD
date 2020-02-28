@@ -160,11 +160,19 @@ namespace Registration
                     }
                     else
                     {
-                        epMain.SetError(tbLogin, "Логин будет изменён!");
+                        if (frmType == FormType.Update)
+                        {
+                            epMain.SetError(tbLogin, "Логин будет изменён!");
+                        }
+                        else
+                        {
+                            epMain.SetError(tbLogin, "");
+                        }
                         tbLogin.Tag = true;
                     }
                 }
             }
+
             RefreshBtReg();
         }
 
