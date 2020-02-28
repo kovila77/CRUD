@@ -109,13 +109,13 @@ namespace Registration
                     dtpDate.Enabled = false;
                     break;
                 case FormType.Insert:
-                    
+
                     btRegister.Text = "Добавить";
                     this.Text = "Добавление нового пользователя";
                     dtpDate.Value = DateTime.Today;
                     dtpDate.Enabled = false;
                     break;
-                case FormType.Update:                    
+                case FormType.Update:
                     btRegister.Text = "Изменить";
                     this.Text = "Изменение пользователя";
                     break;
@@ -160,14 +160,7 @@ namespace Registration
                     }
                     else
                     {
-                        if (frmType == FormType.Update)
-                        {
-                            epMain.SetError(tbLogin, "Логин будет изменён!");
-                        }
-                        else
-                        {
-                            epMain.SetError(tbLogin, "");
-                        }
+                        epMain.SetError(tbLogin, "Логин будет изменён!");
                         tbLogin.Tag = true;
                     }
                 }
@@ -246,18 +239,18 @@ namespace Registration
 
         private void RefreshBtReg()
         {
-            if ((bool)tbPassword.Tag && (bool)tbLogin.Tag)
-            {
-                if (frmType == FormType.Update && !(epMain.GetError(dtpDate) != "" || epMain.GetError(tbLogin) != "" || epMain.GetError(tbPassword) != ""))
-                    btRegister.Enabled = false;
-                else
-                    btRegister.Enabled = true;
-
-            }
-            else
-            {
-                btRegister.Enabled = false;
-            }
+            //if ((bool)tbPassword.Tag && (bool)tbLogin.Tag)
+            //{
+            //    if (frmType == FormType.Update && !(epMain.GetError(dtpDate) != "" || epMain.GetError(tbLogin) != "" || epMain.GetError(tbPassword) != ""))
+            //        btRegister.Enabled = false;
+            //    else
+            //        btRegister.Enabled = true;
+            //}
+            //else
+            //{
+            //    btRegister.Enabled = false;
+            //}
+            btRegister.Enabled = (bool)tbPassword.Tag && (bool)tbLogin.Tag && !(frmType == FormType.Update && !(epMain.GetError(dtpDate) != "" || epMain.GetError(tbLogin) != "" || epMain.GetError(tbPassword) != ""));
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
