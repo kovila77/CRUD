@@ -42,8 +42,8 @@ namespace CRUD
                     var lvi = new ListViewItem(new[]
                     {
                         login,
-                        Encoding.Default.GetString(salt),
-                        Encoding.Default.GetString(password),
+                        Convert.ToBase64String(salt),
+                        Convert.ToBase64String(password),
                         createDate.ToLongDateString()
                     })
                     {
@@ -65,8 +65,8 @@ namespace CRUD
                 var lvi = new ListViewItem(new[]
                 {
                         formRegistration.UserLogin,
-                        Encoding.Default.GetString(formRegistration.UserSalt),
-                        Encoding.Default.GetString(formRegistration.UserPassword),
+                        Convert.ToBase64String(formRegistration.UserSalt),
+                        Convert.ToBase64String(formRegistration.UserPassword),
                         formRegistration.DateReg.ToLongDateString()
                     })
                 {
@@ -95,11 +95,23 @@ namespace CRUD
                 if (formUpdating.ShowDialog() == DialogResult.OK)
                 {
                     selectedItem.SubItems[0].Text = formUpdating.UserLogin;
-                    if (formUpdating.UserSalt != null) selectedItem.SubItems[1].Text = Encoding.Default.GetString(formUpdating.UserSalt);
-                    if (formUpdating.UserPassword != null) selectedItem.SubItems[2].Text = Encoding.Default.GetString(formUpdating.UserPassword);
+                    if (formUpdating.UserSalt != null) selectedItem.SubItems[1].Text = Convert.ToBase64String(formUpdating.UserSalt);
+                    if (formUpdating.UserPassword != null) selectedItem.SubItems[2].Text = Convert.ToBase64String(formUpdating.UserPassword);
                     selectedItem.SubItems[3].Text = formUpdating.DateReg.ToLongDateString();
                     selectedItem.Tag = Tuple.Create(formUpdating.UserId, formUpdating.DateReg);
                 }
+            }
+        }
+
+        private void удалитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _dbConrol.DeleteUsers((from item
+                                   in lvUsers.SelectedItems.Cast<ListViewItem>()
+                                   select ((Tuple<int, DateTime>)item.Tag).Item1).ToArray());
+
+            foreach (ListViewItem selectedItem in lvUsers.SelectedItems)
+            {
+                lvUsers.Items.Remove(selectedItem);
             }
         }
     }

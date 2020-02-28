@@ -274,6 +274,22 @@ namespace DBUsersHandler
             }
         }
 
+        public void DeleteUsers(int[] userIds)
+        {
+            using (var sConn = new NpgsqlConnection(_sConnStr))
+            {
+                sConn.Open();
+                var sCommand = new NpgsqlCommand
+                {
+                    Connection = sConn,
+                    CommandText = @"DELETE FROM users WHERE uid = ANY(@userIds)"
+                };
+
+                sCommand.Parameters.AddWithValue("@userIds", userIds);
+                sCommand.ExecuteNonQuery();
+            }
+        }
+
         public DBUsersDataExtracror CreateDataExtractor()
         {
             return new DBUsersDataExtracror(_sConnStr);

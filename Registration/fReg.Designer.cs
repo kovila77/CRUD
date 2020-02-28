@@ -35,10 +35,10 @@
             this.btRegister = new System.Windows.Forms.Button();
             this.epMain = new System.Windows.Forms.ErrorProvider(this.components);
             this.pnPassword = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dtpDate = new System.Windows.Forms.DateTimePicker();
             this.tbPassword = new System.Windows.Forms.TextBox();
             this.lPassword = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dtpDate = new System.Windows.Forms.DateTimePicker();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pnLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.epMain)).BeginInit();
@@ -103,25 +103,6 @@
             this.pnPassword.Size = new System.Drawing.Size(414, 47);
             this.pnPassword.TabIndex = 2;
             // 
-            // label1
-            // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(10, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(394, 19);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Дата регистрации";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            // 
-            // dtpDate
-            // 
-            this.dtpDate.Dock = System.Windows.Forms.DockStyle.Top;
-            this.dtpDate.Location = new System.Drawing.Point(10, 29);
-            this.dtpDate.Name = "dtpDate";
-            this.dtpDate.Size = new System.Drawing.Size(394, 20);
-            this.dtpDate.TabIndex = 2;
-            this.dtpDate.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
-            // 
             // tbPassword
             // 
             this.tbPassword.Dock = System.Windows.Forms.DockStyle.Top;
@@ -142,6 +123,25 @@
             this.lPassword.TabIndex = 1;
             this.lPassword.Text = "Пароль:";
             // 
+            // label1
+            // 
+            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label1.Location = new System.Drawing.Point(30, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(354, 19);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Дата регистрации";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
+            // dtpDate
+            // 
+            this.dtpDate.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dtpDate.Location = new System.Drawing.Point(30, 29);
+            this.dtpDate.Name = "dtpDate";
+            this.dtpDate.Size = new System.Drawing.Size(354, 20);
+            this.dtpDate.TabIndex = 2;
+            this.dtpDate.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.dtpDate);
@@ -149,7 +149,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 94);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(10);
+            this.panel1.Padding = new System.Windows.Forms.Padding(30, 10, 30, 10);
             this.panel1.Size = new System.Drawing.Size(414, 96);
             this.panel1.TabIndex = 3;
             // 

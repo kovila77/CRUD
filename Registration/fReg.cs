@@ -98,18 +98,24 @@ namespace Registration
             switch (frmType)
             {
                 case FormType.SelfMade:
+                    tbLogin.Tag = false;
+                    tbPassword.Tag = false;
                     btRegister.Text = "Зарегистрировать";
                     this.Text = "Регистрация";
                     dtpDate.Value = DateTime.Today;
                     dtpDate.Enabled = false;
                     break;
                 case FormType.Insert:
+                    tbLogin.Tag = false;
+                    tbPassword.Tag = false;
                     btRegister.Text = "Добавить";
                     this.Text = "Добавление нового пользователя";
                     dtpDate.Value = DateTime.Today;
                     dtpDate.Enabled = false;
                     break;
                 case FormType.Update:
+                    tbLogin.Tag = true;
+                    tbPassword.Tag = true;
                     btRegister.Text = "Изменить";
                     this.Text = "Изменение пользователя";
                     break;
@@ -136,16 +142,34 @@ namespace Registration
             if (!loginCheckRegex.IsMatch(tbLogin.Text))
             {
                 epMain.SetError(tbLogin, "Некорректный логин: В логине могут быть использованы символы, изображённые на классической русско-английской раскладке клавиатуре. Длина логина от 6 до 50 символов");
+                tbLogin.Tag = false;
             }
             else
             {
-                if (_dbConrol.IsExistsInDBLogin(tbLogin.Text))
+                if (frmType == FormType.Update && _dbConrol.RemoveExtraSpaces(tbLogin.Text) == userLogin)
                 {
-                    epMain.SetError(tbLogin, "Логин уже занят");
+                    epMain.SetError(tbLogin, "");
+                    tbLogin.Tag = true;
                 }
                 else
                 {
-                    epMain.SetError(tbLogin, "");
+                    if (_dbConrol.IsExistsInDBLogin(tbLogin.Text))
+                    {
+                        epMain.SetError(tbLogin, "Логин уже занят");
+                        tbLogin.Tag = false;
+                    }
+                    else
+                    {
+                        if (frmType == FormType.Update)
+                        {
+                            epMain.SetError(tbLogin, "Логин будет изменён!");
+                        }
+                        else
+                        {
+                            epMain.SetError(tbLogin, "");
+                        }
+                        tbLogin.Tag = true;
+                    }
                 }
             }
             RefreshBtReg();
@@ -195,24 +219,39 @@ namespace Registration
 
         private void tbPassword_TextChanged(object sender, EventArgs e)
         {
-            if (frmType == FormType.Update && _dbConrol.RemoveExtraSpaces(tbPassword.Text) == "") { epMain.SetError(tbPassword, ""); return; }
-
-            if (!PasswordHandler.PasswordHandler.IsStrongPassword(tbPassword.Text, new List<string> { tbLogin.Text }))
-            {
-                epMain.SetError(tbPassword, "Слабый пороль");
-            }
+            if (frmType == FormType.Update && _dbConrol.RemoveExtraSpaces(tbPassword.Text) == "") { epMain.SetError(tbPassword, ""); tbPassword.Tag = true; return; }
             else
             {
-                epMain.SetError(tbPassword, "");
+                if (!PasswordHandler.PasswordHandler.IsStrongPassword(tbPassword.Text, new List<string> { tbLogin.Text }))
+                {
+                    epMain.SetError(tbPassword, "Слабый пороль");
+                    tbPassword.Tag = false;
+                }
+                else
+                {
+                    if (frmType == FormType.Update)
+                    {
+                        epMain.SetError(tbPassword, "Пароль будет изменён!");
+                    }
+                    else
+                    {
+                        epMain.SetError(tbPassword, "");
+                    }
+                    tbPassword.Tag = true;
+                }
+                RefreshBtReg();
             }
-            RefreshBtReg();
         }
 
         private void RefreshBtReg()
         {
-            if (epMain.GetError(tbPassword) == "" && epMain.GetError(tbLogin) == "")
+            if ((bool)tbPassword.Tag && (bool)tbLogin.Tag)
             {
-                btRegister.Enabled = true;
+                if (frmType == FormType.Update && !(epMain.GetError(dtpDate) != "" || epMain.GetError(tbLogin) != "" || epMain.GetError(tbPassword) != ""))
+                    btRegister.Enabled = false;
+                else
+                    btRegister.Enabled = true;
+
             }
             else
             {
@@ -222,7 +261,16 @@ namespace Registration
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-
+            if (frmType != FormType.Update) return;
+            if (dtpDate.Value == dateReg)
+            {
+                epMain.SetError(tbPassword, "");
+            }
+            else
+            {
+                epMain.SetError(dtpDate, "Дата будет измененна!");
+            }
+            RefreshBtReg();
         }
     }
 }
