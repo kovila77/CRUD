@@ -74,7 +74,7 @@ namespace DBUsersHandler
         /// </summary>
         /// <param name="newLogin"></param>
         /// <returns></returns>
-        public bool IsExistsInDBLogin(string newLogin)
+        public bool IsExistsInDBLogin(string newLogin, bool considerRegister = true)
         {
             newLogin = RemoveExtraSpaces(newLogin);
 
@@ -83,7 +83,7 @@ namespace DBUsersHandler
             using (var sConn = new NpgsqlConnection(_sConnStr))
             {
                 sConn.Open();
-                var sCOmmand = new NpgsqlCommand
+                var sCommand = new NpgsqlCommand
                 {
                     Connection = sConn,
                     CommandText = @"
@@ -91,8 +91,18 @@ namespace DBUsersHandler
                         FROM users
                         WHERE lower(ulogin) = lower(@newLogin)"
                 };
-                sCOmmand.Parameters.AddWithValue("@newLogin", newLogin);
-                if ((long)sCOmmand.ExecuteScalar() > 0)
+                if (considerRegister)
+                    sCommand.CommandText = @"
+                        SELECT count(*)
+                        FROM users
+                        WHERE lower(ulogin) = lower(@newLogin)";
+                else
+                    sCommand.CommandText = @"
+                        SELECT count(*)
+                        FROM users
+                        WHERE ulogin = @newLogin";
+                sCommand.Parameters.AddWithValue("@newLogin", newLogin);
+                if ((long)sCommand.ExecuteScalar() > 0)
                 {
                     return true;
                 }
@@ -158,6 +168,7 @@ namespace DBUsersHandler
                         WHERE lower(ulogin) = lower(@uLogin)
                           AND upassword = @uPassword;"
                 };
+
                 sCommand.Parameters.AddWithValue("@uLogin", uLogin);
                 sCommand.Parameters.AddWithValue("@uPassword", PasswordHandler.PasswordHandler.HashPassword(uPassword, uSalt));
                 if ((long)sCommand.ExecuteScalar() > 0)

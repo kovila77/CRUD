@@ -153,7 +153,7 @@ namespace Registration
                 }
                 else
                 {
-                    if (_dbConrol.IsExistsInDBLogin(tbLogin.Text))
+                    if (_dbConrol.IsExistsInDBLogin(tbLogin.Text, !(frmType == FormType.Update)))
                     {
                         epMain.SetError(tbLogin, "Логин уже занят");
                         tbLogin.Tag = false;
